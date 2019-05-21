@@ -1,4 +1,6 @@
-# 打造一个的博客网站
+# 打造一个的静态网站
+
+## toc
 
 博客记录自己的成长轨迹，是非常有必要的，鉴于工作近三年，有必要搭建一个博客系统。 一来不给自己逃避记录的理由， 二来想了解下这方面的技术。
 
@@ -16,7 +18,7 @@
 
 现进行准备工作，安装需要的npm包。
 
-```bash
+```shell
 npm i unified to-vfile vfile-reporter remark-parse remark-toc remark-rehype rehype-document rehype-stringify -S
 ```
 
@@ -83,3 +85,18 @@ processor.process(vfile.readSync('article.md'), function(err, file) {
 ```
 
 在 [unified](!https://unified.js.org/) 生态中，通过各种插件， 逐步处理这棵树，最终生成我们想要的结果。
+
+## 使用 `gulp` 自动化构建工具来准备构建工作
+
+首先希望 `gulp`，能提供一个web服务来展现 `markdown` 生成的文档， 并且， 我希望更新 `markdown` 的时候能自动刷新浏览器。
+
+安装 [gulp](https://gulpjs.com/) 及其相关依赖：
+```bash
+npm i gulp browser-sync
+```
+
+在项目根目录创建 `gulpfile.js`
+```js
+sfsfsfss
+```
+111sfs

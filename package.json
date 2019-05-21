@@ -13,7 +13,11 @@
     "unified": "^7.1.0",
     "vfile-reporter": "^5.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.26.5",
+    "gulp": "^4.0.2",
+    "rimraf": "^2.6.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
