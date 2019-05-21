@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contents</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h1>打造一个的博客网站</h1>
+<p>博客记录自己的成长轨迹，是非常有必要的，鉴于工作近三年，有必要搭建一个博客系统。 一来不给自己逃避记录的理由， 二来想了解下这方面的技术。</p>
+<p>在选型上，考虑博客是主要功能 <strong>记录自己</strong> 和  <strong>展现他人</strong>，所以简单、快是一个重要的指标，加上三大框架（<code>React</code>, <code>Vue</code>, <code>Angular</code>）似乎有些小题大作，而且速度和简单性没有纯HTML来的直接，另一方面，现开发者大都是使用 <code>markdown</code> 来书写博客，考虑到通用性（可发布到各大开发者网站），里面不应包含三大框架的组件，由此，得到了最直接的描述： <strong>写<code>markdown</code>，渲染成<code>HTML</code></strong>。</p>
+<h2>将 <code>markdown</code> 渲染成 <code>html</code></h2>
+<p>在 <code>wikipedia</code> 中， <code>markdown</code> 描述为:</p>
+<blockquote>
+<p>Markdown是一种轻量级标记语言, 它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML（或者HTML）文档”</p>
+</blockquote>
+<p><code>markdown</code> 的特点是 <strong>轻量化</strong>、<strong>易读易写</strong>。我们现在要将 <code>markdown</code> 转化为 <code>html</code>。选型上选择了 <a href="!https://unified.js.org/">unified</a>:</p>
+<blockquote>
+<p>unified is an interface for processing text with syntax trees and transforming between them. 
+unified是一个用语法树处理文本并在它们之间进行转换的接口。</p>
+</blockquote>
+<pre><code class="language-bash">npm i unified unified-stream to-vfile vfile-reporter remark-parse remark-toc remark-rehype rehype-document rehype-stringify -S
+</code></pre>
+<pre><code class="language-js">var unified = require('unified')
+var vfile = require('to-vfile')
+var report = require('vfile-reporter')
+var markdown = require('remark-parse')
+var toc = require('remark-toc')
+var remark2rehype = require('remark-rehype')
+var doc = require('rehype-document')
+var html = require('rehype-stringify')
+
+var processor = unified()
+   .use(markdown)
+   .use(toc)
+   .use(remark2rehype)
+   .use(doc, {title: 'Contents'})
+   .use(html)
+
+
+processor.process(vfile.readSync('article.md'), function(err, file) {
+  if (err) throw err
+  console.error(report(file))
+  file.extname = '.html'
+  vfile.writeSync(file)
+})
+</code></pre>
+</body>
+</html>
