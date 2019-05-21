@@ -14,10 +14,13 @@
 > unified is an interface for processing text with syntax trees and transforming between them. <br/>
 > unified是一个用语法树处理文本并在它们之间进行转换的接口。
 
+现进行准备工作，安装需要的npm包。
+
 ```bash
 npm i unified to-vfile vfile-reporter remark-parse remark-toc remark-rehype rehype-document rehype-stringify -S
 ```
 
+创建一个 `markdown` 文件, 运行以下代码，可以将 `markdown` 生成 `html`,
 
 ```js
 var unified = require('unified')
@@ -45,3 +48,38 @@ processor.process(vfile.readSync('article.md'), function(err, file) {
 })
 
 ```
+
+实际上，`markdown` ，`html` 这样的语言，`javascript` 对他们的处理方式都是相似的， 都是将他们处理成为一个对象，而这个对象会根据他们本身的结构来展现，通常来说是一棵树, 在 `react` 中, 虚拟 dom 就是用来描述 `html` 树的， 类似的，如果有以下 `markdown` 代码：
+
+```markdown
+# 一级标题
+
+这是描述
+```
+
+[unified](!https://unified.js.org/) 会生成以下树结构对象（简化过）：
+
+```js
+{ type: 'root',
+  children:
+   [
+     { type: 'heading',
+       depth: 1,
+       children: [ { type: 'text', value: '一级标题', position: [Object] } ],
+       position:
+        { start: { line: 1, column: 1, offset: 0 },
+          end: { line: 1, column: 7, offset: 6 },
+          indent: [] } },
+     { type: 'paragraph',
+       children: [ { type: 'text', value: '这是描述', position: [Object] } ],
+       position:
+        { start: { line: 3, column: 1, offset: 8 },
+          end: { line: 3, column: 5, offset: 12 },
+          indent: [] } }
+  ],
+  position:
+   { start: { line: 1, column: 1, offset: 0 },
+     end: { line: 3, column: 5, offset: 12 } } }
+```
+
+在 [unified](!https://unified.js.org/) 生态中，通过各种插件， 逐步处理这棵树，最终生成我们想要的结果。
