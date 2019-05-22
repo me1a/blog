@@ -1,6 +1,7 @@
 const { parallel, series, src, dest, watch } = require('gulp')
 
 const browserSync = require('browser-sync').create()
+const rm = require('rimraf')
 
 const md2obj = require('./build/gulp-md2obj')
 const pug2html = require('./build/gulp-pug2html')
@@ -27,7 +28,10 @@ function less2css() {
 
 
 
-
+function clean(cb) {
+  rm.sync('dist')
+  cb()
+}
 
 function watchTask() {
   watch('less/**/*.less', parallel(less2css))
@@ -47,5 +51,5 @@ function server(cb) {
 
 
 
-exports.default = series(parallel(doc2html, less2css), server, watchTask)
-exports.build = parallel(doc2html, less2css)
+exports.default = series(clean, parallel(doc2html, less2css), server, watchTask)
+exports.build = series(clean, parallel(doc2html, less2css))
