@@ -11,6 +11,7 @@ const rfm = require('remark-frontmatter')
 
 
 const gfm = require('./parseFrontMatter')
+const autoToc = require('./addToc')
 
 module.exports = function (markdownPath) {
   var processor = unified()
@@ -18,12 +19,13 @@ module.exports = function (markdownPath) {
 
     .use(highlight)
     .use(markdown)
+    .use(autoToc)
     .use(rfm)
     .use(gfm)
+    .use(slug)
+    .use(toc, { tight: true, maxDepth: 2, heading: '目录' })
     .use(test)
     .use(remark2rehype)
-    .use(slug)
-    .use(toc)
     .use(html)
 
 
@@ -31,6 +33,7 @@ module.exports = function (markdownPath) {
   function test() {
 
     return function transformer(tree, file) {
+      console.dir(tree, { depth: 4 })
     }
   }
 
