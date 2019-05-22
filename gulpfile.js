@@ -2,15 +2,18 @@ const { parallel, series, src, dest, watch } = require('gulp')
 
 const browserSync = require('browser-sync').create()
 
-const myplugin = require('./build/gulp-md2html')
+const md2obj = require('./build/gulp-md2obj')
+const pug2html = require('./build/gulp-pug2html')
 
 const less = require('gulp-less')
 const mincss = require('gulp-clean-css')
 
 
 
-function md2html() {
-  return src('article/**/*.md').pipe(myplugin()).pipe(dest('dist/'))
+function doc2html() {
+  return src('article/**/*.md').pipe(md2obj()).pipe(pug2html(
+    { template: process.cwd() + '/article/template.pug' }
+  )).pipe(dest('dist/'))
 }
 function less2css() {
   return src('less/*.less')
@@ -21,7 +24,7 @@ function less2css() {
 
 function watchTask() {
   watch('less/**/*.less', parallel(less2css))
-  watch('article/**/*.md', parallel(md2html))
+  watch('article/**/*.md', parallel(doc2html))
 }
 
 
@@ -38,4 +41,5 @@ function server(cb) {
 
 
 
-exports.default = series(parallel(md2html, less2css), server, watchTask)
+exports.default = series(parallel(doc2html, less2css), server, watchTask)
+exports.build = parallel(doc2html, less2css)

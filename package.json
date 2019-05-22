@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "pug": "^2.0.3",
     "rehype-document": "^3.0.0",
     "rehype-stringify": "^5.0.0",
     "remark-highlight.js": "^5.1.0",

@@ -14,11 +14,12 @@ module.exports = options => {
 
 
     try {
-      file.contents = Buffer.from(md2html(file.path));
-      file.extname = '.html';
+      const { doc } = md2html(file.path)
+      file.contents = Buffer.from(doc);
+      file.data = { name: 'meihuan' }
       callback(null, file);
     } catch (error) {
-      callback(new PluginError('gulp-markdown-concat-pug', error, { fileName: file.path }));
+      callback(new PluginError('gulp-markdown-obj', error, { fileName: file.path }));
     }
   });
 };

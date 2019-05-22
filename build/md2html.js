@@ -5,7 +5,6 @@ const markdown = require('remark-parse')
 const slug = require('remark-slug')
 const toc = require('remark-toc')
 const remark2rehype = require('remark-rehype')
-const doc = require('rehype-document')
 const html = require('rehype-stringify')
 const highlight = require('remark-highlight.js')
 
@@ -19,7 +18,6 @@ module.exports = function (markdownPath) {
     .use(remark2rehype)
     .use(slug)
     .use(toc)
-    .use(doc, { title: 'Contents' })
     .use(html)
 
 
@@ -32,5 +30,7 @@ module.exports = function (markdownPath) {
   }
 
   const file = processor.processSync(vfile.readSync(markdownPath))
-  return file.contents
+  return {
+    doc: file.contents
+  }
 }
