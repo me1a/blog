@@ -1,14 +1,17 @@
-doctype html
+<!DOCTYPE html>
 html
-      head
-            meta(charset='UTF-8')
-            meta(name='viewport' content='width=device-width, initial-scale=1.0')
-            meta(name='keywords' content= keywords)
-            meta(name='description' content= description)
-            link(rel="stylesheet", href="/static/css/markdown.css")
-            link(rel="stylesheet", href="/static/css/highlight-one-dark.css")
-            script
-                 != 'window._PAGEDATA = ' + JSON.stringify(data)
-      body
-        .home
-          != doc
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title It`s me
+    link(rel="stylesheet", href="/static/css/home.css")
+  body
+    .home
+      .des
+        .name MeiHuan`s Blog
+        .menu
+          a(href="/article.html") 博客
+          a(href="/") 资讯
+          a(href="/") 资源
+          a(href="/") 实验室
