@@ -30,4 +30,4 @@ function server(cb) {
 
 
 
-exports.default = series(server, watchTask)
+exports.default = series(md2html, server, watchTask)

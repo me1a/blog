@@ -96,7 +96,3 @@ npm i gulp browser-sync
 ```
 
 在项目根目录创建 `gulpfile.js`
-```js
-sfsfsfss
-```
-111sfs
