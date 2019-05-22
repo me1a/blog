@@ -9,4 +9,5 @@ html
             script
                  != 'window._PAGEDATA = ' + JSON.stringify(data)
       body
-        != doc
+        .content
+          != doc

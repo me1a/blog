@@ -22,19 +22,25 @@ function less2css() {
     .pipe(dest('dist/static/css/'))
 }
 
+
+
+
+
+
+
+
 function watchTask() {
   watch('less/**/*.less', parallel(less2css))
-  watch('article/**/*.md', parallel(doc2html))
+  watch('article/**/*.*', parallel(doc2html))
 }
-
-
 function server(cb) {
   browserSync.init({
     watch: true,
     port: 3434,
     server: {
       baseDir: "./dist/",
-    }
+    },
+    open: false
   })
   cb()
 }
