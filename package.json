@@ -17,6 +17,8 @@
   "devDependencies": {
     "browser-sync": "^2.26.5",
     "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-less": "^4.0.1",
     "plugin-error": "^1.0.1",
     "remark-slug": "^5.1.1",
     "rimraf": "^2.6.3"
