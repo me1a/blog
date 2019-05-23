@@ -15,7 +15,6 @@ module.exports = options => {
 
     try {
       const compiledFunction = pug.compileFile(options.template)
-      console.log(typeof file.contents)
       const doc = Buffer.from(file.contents)
       const str = compiledFunction({
         ...file.data,

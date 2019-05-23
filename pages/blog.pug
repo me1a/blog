@@ -1,3 +1,19 @@
+mixin contents(content, isroot)
+  div(class=isroot? 'open contents':'contents')
+    each item in content
+      div(class=isroot ? 'root item': 'item')
+        div(class=item.children? 'name': 'link')
+          i(class=item.children?'iconfont icon-folder-close':'iconfont icon-file')
+          if  item.children
+            span #{item.name}
+          else
+            a(href=item.url) #{item.title}
+        div(class=isroot ? 'children': 'child')
+          if item.children
+            +contents(item.children)
+
+
+
 <!DOCTYPE html>
 html
   head
@@ -5,13 +21,20 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible", content="ie=edge")
     title It`s me
-    link(rel="stylesheet", href="/static/css/home.css")
+    link(rel="stylesheet", href="//at.alicdn.com/t/font_1197539_q23260lvbve.css")
+    link(rel="stylesheet", href="/static/css/blog.css")
   body
-    .home
-      .des
-        .name MeiHuan`s Blog
-        .menu
-          a(href="/blog.html") 博客
-          a(href="/") 资讯
-          a(href="/") 资源
-          a(href="/") 实验室
+      +contents(tree, true)
+
+  script.
+    document.querySelector('.open.contents').addEventListener('click', (e) => {
+      if(e.target.parentElement.getAttribute('class').includes('name')) {
+        const tc = e.target.parentElement.parentElement.querySelector('.children')
+        const b = tc.getAttribute('class').includes('open')
+        const c = document.querySelectorAll('.children')
+        for(let i = 0; i< c.length; i++){
+          c[i].setAttribute('class', 'children')
+        }
+        tc.setAttribute('class', b ? 'children': 'children open')
+      }
+    })

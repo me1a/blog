@@ -1,0 +1,32 @@
+.contents {
+  padding-left: 10px;
+
+
+  .item {
+    padding: 4px 0;
+    font-size: 14px;
+    color: #333;
+    font-weight: 300;
+    user-select: none;
+    .name,
+    .link {
+      cursor: pointer;
+
+      .iconfont {
+        margin-right: 6px;
+      }
+
+      a {
+        text-decoration: none;
+      }
+    }
+
+    .children {
+      display: none;
+
+      &.open {
+        display: block
+      }
+    }
+  }
+}

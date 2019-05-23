@@ -33,11 +33,11 @@ module.exports = function (markdownPath) {
   function test() {
 
     return function transformer(tree, file) {
-      console.dir(tree, { depth: 4 })
     }
   }
 
   const file = processor.processSync(vfile.readSync(markdownPath))
+  console.error(report(file))
   return {
     doc: file.contents,
     ...file.data
