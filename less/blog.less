@@ -1,32 +1,79 @@
-.contents {
-  padding-left: 10px;
+body {
+  margin: 0;
+}
 
 
-  .item {
-    padding: 4px 0;
-    font-size: 14px;
-    color: #333;
-    font-weight: 300;
-    user-select: none;
-    .name,
-    .link {
-      cursor: pointer;
+.banner {
+  height: 400px;
+  padding: 16px;
+  padding-bottom: 0;
+  background-image: url(/static/img/mk.jpeg);
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-clip: content-box;
+  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-      .iconfont {
-        margin-right: 6px;
-      }
+  .title {
+    font-size: 40px;
+    color: white;
+    // background: rgba(0, 0, 0, 0.3);
+  }
 
-      a {
-        text-decoration: none;
-      }
-    }
+  .input {
+    width: 80vh;
+    position: absolute;
+    height: 50px;
+    background: white;
+    bottom: -25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
-    .children {
-      display: none;
-
-      &.open {
-        display: block
-      }
+    input {
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      border: none;
+      outline: none;
+      padding: 0 16px;
     }
   }
+}
+
+.item {
+  padding: 0px 6px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 300;
+  user-select: none;
+  border-left: 1px solid #ddd;
+
+  .name,
+  .link {
+    cursor: pointer;
+    padding: 3px 0;
+
+    .iconfont {
+      margin-right: 6px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .children {
+    display: none;
+
+    &.open {
+      display: block
+    }
+  }
+}
+
+.root {
+  border-left: 1px solid transparent;
 }

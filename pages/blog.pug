@@ -24,7 +24,13 @@ html
     link(rel="stylesheet", href="//at.alicdn.com/t/font_1197539_q23260lvbve.css")
     link(rel="stylesheet", href="/static/css/blog.css")
   body
+      .banner
+        //- .title It`s me
+        .input
+          input
       +contents(tree, true)
+      .box
+
 
   script.
     document.querySelector('.open.contents').addEventListener('click', (e) => {

@@ -36,6 +36,9 @@ function pug2html() {
       }
     })).pipe(dest('dist'))
 }
+function copyimg() {
+  return src('img/**/*.*').pipe(dest('dist/static/img'))
+}
 
 
 
@@ -78,5 +81,5 @@ function getMDTree(cb) {
 
 
 
-exports.default = series(clean, parallel(doc2html, less2css), getMDTree, pug2html, server, watchTask)
-exports.build = series(clean, parallel(doc2html, less2css), getMDTree, pug2html)
+exports.default = series(clean, parallel(doc2html, less2css, copyimg), getMDTree, pug2html, server, watchTask)
+exports.build = series(clean, parallel(doc2html, less2css, copyimg), getMDTree, pug2html)
