@@ -14,10 +14,26 @@ const dirTree = require("directory-tree")
 
 
 let tree
+let search = []
 
 
 function doc2html() {
-  return src('blog/**/*.md').pipe(md2obj()).pipe(obj2pug(
+  return src('blog/**/*.md').pipe(md2obj({
+    visit(d) {
+      if (search.some(item => item.title === d._name && item.url === d._url)) return
+      d._search.forEach(i => {
+        search.push({
+          url: d._url,
+          title: i,
+          name: d._name
+        })
+      })
+      search.push({
+        title: d._name,
+        url: d._url
+      })
+    }
+  })).pipe(obj2pug(
     { template: process.cwd() + '/components/blog-template.pug' }
   )).pipe(dest('dist/blog/'))
 }
@@ -28,11 +44,11 @@ function less2css() {
     .pipe(dest('dist/static/css/'))
 }
 function pug2html() {
-  console.dir(tree, { depth: 3 })
   return src('pages/**/*.pug')
     .pipe(pug({
       locals: {
-        tree
+        tree,
+        search
       }
     })).pipe(dest('dist'))
 }

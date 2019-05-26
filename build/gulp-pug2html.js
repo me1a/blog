@@ -18,7 +18,7 @@ module.exports = options => {
       const doc = Buffer.from(file.contents)
       const str = compiledFunction({
         ...file.data,
-        doc: doc.toString()
+        _doc: doc.toString()
       })
 
       file.contents = Buffer.from(str);

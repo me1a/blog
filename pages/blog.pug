@@ -23,16 +23,25 @@ html
     title It`s me
     link(rel="stylesheet", href="//at.alicdn.com/t/font_1197539_q23260lvbve.css")
     link(rel="stylesheet", href="/static/css/blog.css")
+    script
+      != 'window._SEARCH_DATA = ' + JSON.stringify(search)
   body
       .banner
         //- .title It`s me
         .input
-          input
-      +contents(tree, true)
-      .box
-
+          input.search
+          .result
+      .main
+        .last
+        .all
+          +contents(tree, true)
 
   script.
+
+    function changeHandle(e) {
+      console.log(e)
+    }
+
     document.querySelector('.open.contents').addEventListener('click', (e) => {
       if(e.target.parentElement.getAttribute('class').includes('name')) {
         const tc = e.target.parentElement.parentElement.querySelector('.children')
@@ -44,3 +53,22 @@ html
         tc.setAttribute('class', b ? 'children': 'children open')
       }
     })
+    const result = document.querySelector('.result')
+    const search = document.querySelector('.search')
+    search.addEventListener('input', (e) => {
+      const value  = e.target.value
+      result.innerHTML = initResult(value)
+
+    })
+    function initResult(v) {
+      let html = ''
+      _SEARCH_DATA.forEach(item => {
+        if(item.title.includes(v)) {
+          html += `<a href='${item.url}'>${item.title.replace(new RegExp(v, 'g'), `<b>${v}</b>`)}</a>`
+        }
+      })
+      html = html == '' ? '<div>未找到结果</div>': html
+      return v ? html : ''
+    }
+    result.innerHTML = initResult(search.value)
+    search.focus()

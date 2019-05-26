@@ -27,18 +27,48 @@ body {
   .input {
     width: 80vh;
     position: absolute;
-    height: 50px;
+    min-height: 50px;
     background: white;
-    bottom: -25px;
+    top: 50px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
-    input {
-      height: 100%;
+    .search {
+      height: 50px;
       width: 100%;
       box-sizing: border-box;
       border: none;
       outline: none;
       padding: 0 16px;
+      position: relative;
+      z-index: 3;
+      border-bottom: 1px solid #ddd;
+
+    }
+
+    .result {
+      max-height: 300px;
+      overflow: auto;
+      background: white;
+
+      div {
+        height: 300px;
+        line-height: 300px;
+      }
+
+      a {
+        display: block;
+        text-decoration: none;
+        padding: 12px;
+        color: #333;
+
+        &:hover {
+          background: #eee;
+        }
+
+        b {
+          color: #39f;
+        }
+      }
     }
   }
 }
@@ -76,4 +106,10 @@ body {
 
 .root {
   border-left: 1px solid transparent;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
 }

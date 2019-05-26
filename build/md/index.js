@@ -9,14 +9,13 @@ const html = require('rehype-stringify')
 const highlight = require('remark-highlight.js')
 const rfm = require('remark-frontmatter')
 
-
 const gfm = require('./parseFrontMatter')
 const autoToc = require('./addToc')
+const getDes = require('./getDes')
 
 module.exports = function (markdownPath) {
   var processor = unified()
-
-
+    .use(getDes)
     .use(highlight)
     .use(markdown)
     .use(autoToc)
@@ -33,13 +32,17 @@ module.exports = function (markdownPath) {
   function test() {
 
     return function transformer(tree, file) {
+      // console.dir(tree, { depth: 3 })
     }
   }
 
   const file = processor.processSync(vfile.readSync(markdownPath))
   console.error(report(file))
+
   return {
-    doc: file.contents,
+    _doc: file.contents,
+    _description: file._description,
+    _search: file._search,
     ...file.data
   }
 }
