@@ -12,7 +12,13 @@ mixin contents(content, isroot)
           if item.children
             +contents(item.children)
 
-
+mixin lasts(last)
+  div.last
+    each item in last
+      .item
+        a(href=item.url) #{item.name}
+        p #{item.des}
+        p.time #{item.updateTime}
 
 <!DOCTYPE html>
 html
@@ -25,6 +31,8 @@ html
     link(rel="stylesheet", href="/static/css/blog.css")
     script
       != 'window._SEARCH_DATA = ' + JSON.stringify(search)
+    script
+      != 'window._LAST_DATA = ' + JSON.stringify(last)
   body
       .banner
         //- .title It`s me
@@ -32,8 +40,10 @@ html
           input.search
           .result
       .main
-        .last
+        .lasts
+          +lasts(last.sort((a, b) => a.updateTime < b.updateTime ? 1 : -1).slice(0, 15))
         .all
+          h4 目录
           +contents(tree, true)
 
   script.
@@ -72,3 +82,15 @@ html
     }
     result.innerHTML = initResult(search.value)
     search.focus()
+
+    const sidebar = document.querySelector('.all')
+    document.addEventListener('scroll', (e) => {
+      const s = document.documentElement.scrollTop
+      console.log()
+      if(s > 416) {
+        sidebar.style.left = sidebar.offsetLeft + 'px'
+        sidebar.setAttribute('class', 'all fix')
+      } else {
+        sidebar.setAttribute('class', 'all')
+      }
+    })
