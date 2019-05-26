@@ -12,6 +12,7 @@ const rfm = require('remark-frontmatter')
 const gfm = require('./parseFrontMatter')
 const autoToc = require('./addToc')
 const getDes = require('./getDes')
+const macWindow = require('./addMacWindow')
 
 module.exports = function (markdownPath) {
   var processor = unified()
@@ -25,6 +26,7 @@ module.exports = function (markdownPath) {
     .use(toc, { tight: true, maxDepth: 2, heading: '目录' })
     .use(test)
     .use(remark2rehype)
+    .use(macWindow)
     .use(html)
 
 

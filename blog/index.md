@@ -19,7 +19,8 @@ date: 1999
 
 `markdown` 的特点是 **轻量化**、**易读易写**。我们现在要将 `markdown` 转化为 `html`。选型上选择了 [unified](!https://unified.js.org/):
 
-> unified is an interface for processing text with syntax trees and transforming between them. <br/>
+> unified is an interface for processing text with syntax trees and transforming between them.
+>
 > unified是一个用语法树处理文本并在它们之间进行转换的接口。
 
 现进行准备工作，安装需要的npm包。
