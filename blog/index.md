@@ -95,7 +95,7 @@ processor.process(vfile.readSync('article.md'), function(err, file) {
 
 前端上，技术栈上使用三大框架（`React`, `Vue`, `Angular`）似乎有些小题大作，而且速度和简单性没有纯HTML来的直接。
 后端上，如果将文档存储于数据库， 不管是服务端渲染或客户端渲染都有一些局限性，客户端渲染首屏慢，且不能缓存。服务端渲染扩展性不高。
-另一方面，现开发者大都是使用 `markdown` 来书写博客，直接用`markdown`文件代替数据库存储是一个不错的选择。
+另一方面，现开发者大都是使用 `markdown` 来书写博客，直接用`markdown`文件代替数据库存储。
 考虑到通用性（可发布到各大开发者网站）， 使用简单的 `markdown`（里面不应包含三大框架的组件,如 `mdx` ）是一个不错的选择。
 
 
@@ -174,7 +174,7 @@ exports.build = series(clean, parallel(doc2html, less2css, pug2html))
 
 `less2css`：将样式文件转化压缩到指定的位置。
 
-`pug2html`：不同于 `doc2html`，源头是 `markdown` 文件。此函数将 `pug` 文档直接输出为 `html` 。比如首页，关于我直接的页面。
+`pug2html`：不同于 `doc2html`，源头是 `markdown` 文件。此函数将 `pug` 文档直接输出为 `html` 。比如首页，关于我等页面。
 
 `clean`：清空 /dist 目录。
 
@@ -219,7 +219,7 @@ const tree = [
 
 > FrontMatter: 是文件最上方以 --- 分隔的区域，用于指定个别文件的变量。
 
-在 [hexo](https://hexo.io/zh-cn/docs/front-matter.html) 中这么描述`FrontMatter`, 本项目中借助包 `remark-frontmatter` 将 FrontMatter 抽象成一个 `type` 为 `yaml` 的节点, 它的 value 就是你写的数据的字符串形式, 将 value解析出就可以了， 这里做了键值对中值为对象的兼容。
+在 [hexo](https://hexo.io/zh-cn/docs/front-matter.html) 中这么描述`FrontMatter`, 本项目中借助包 `remark-frontmatter` 将 FrontMatter 抽象成一个 `type` 为 `yaml` 的节点, 它的 value 就是你写的数据的字符串形式, 将 value解析出就可以了， 这里做了键值对中的值为对象的兼容。
 
 
 
