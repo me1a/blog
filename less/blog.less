@@ -25,7 +25,8 @@ body {
   }
 
   .input {
-    width: 80vh;
+    width: 80vw;
+    max-width: 600px;
     position: absolute;
     min-height: 50px;
     background: white;
@@ -163,7 +164,17 @@ body {
 .main {
   display: flex;
   justify-content: space-between;
-  width: 900px;
+  max-width: 900px;
   margin: 24px auto;
   align-items: flex-start;
+}
+
+@media (max-width: 414px) {
+  .all {
+    display: none;
+  }
+
+  .main {
+    padding: 0 8px;
+  }
 }
