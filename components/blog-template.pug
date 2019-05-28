@@ -13,7 +13,8 @@ html
       body
         .fm
           h1.title #{title ? title : _h1}
-          .info
+          if(author && date)
+            .info
             span 作者：#{author}
             span 日期：#{date}
         .content
