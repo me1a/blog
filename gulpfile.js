@@ -34,7 +34,7 @@ function doc2html() {
           url: d._url
         })
       }
-      if (!last.some(item => item.title === d._name && item.url === d._url)) {
+      if (!last.some(item => item.name === d._name && item.url === d._url)) {
         last.push({
           url: d._url,
           name: d._name,
