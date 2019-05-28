@@ -7,8 +7,14 @@ html
             meta(name='description' content= description)
             link(rel="stylesheet", href="/static/css/highlight-one-dark.css")
             link(rel="stylesheet", href="/static/css/blog-template.css")
+            title #{title ? title: 'MeiHuan`s Blog'}
             script
-                 != 'window._PAGEDATA = ' + JSON.stringify(data)
+                 != 'window._PAGEDATA = ' + JSON.stringify(_data)
       body
+        .fm
+          h1.title #{title ? title : _h1}
+          .info
+            span 作者：#{author}
+            span 日期：#{date}
         .content
           != _doc

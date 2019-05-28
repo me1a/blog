@@ -13,6 +13,7 @@ const gfm = require('./parseFrontMatter')
 const autoToc = require('./addToc')
 const getDes = require('./getDes')
 const macWindow = require('./addMacWindow')
+const getTitle = require('./getTitle')
 
 module.exports = function (markdownPath) {
   var processor = unified()
@@ -24,9 +25,10 @@ module.exports = function (markdownPath) {
     .use(gfm)
     .use(slug)
     .use(toc, { tight: true, maxDepth: 2, heading: '目录' })
-    .use(test)
     .use(remark2rehype)
+    .use(test)
     .use(macWindow)
+    .use(getTitle)
     .use(html)
 
 
@@ -34,17 +36,18 @@ module.exports = function (markdownPath) {
   function test() {
 
     return function transformer(tree, file) {
-      // console.dir(tree, { depth: 3 })
+      // console.dir(tree, { depth: 4 })
     }
   }
 
   const file = processor.processSync(vfile.readSync(markdownPath))
   console.error(report(file))
-
+  console.log(file._h1)
   return {
     _doc: file.contents,
     _description: file._description,
     _search: file._search,
+    _h1: file._h1,
     ...file.data
   }
 }
