@@ -12,14 +12,14 @@ const obj2pug = require('./build/gulp-pug2html')
 
 const dirTree = require("directory-tree")
 
-
+const { navbar } = require('./config')
 let tree
 let search = []
 let last = []
 
 
 function doc2html() {
-  return src(['blog/**/*.md', 'test/**/*.md']).pipe(md2obj({
+  return src(['blog/**/*.md', 'tests/**/*.md']).pipe(md2obj({
     visit(d) {
       if (!search.some(item => item.title === d._name && item.url === d._url)) {
         d._search.forEach(i => {
@@ -62,7 +62,8 @@ function pug2html() {
       locals: {
         tree,
         search,
-        last: last
+        last: last,
+        navbar
       }
     })).pipe(dest('dist'))
 }
