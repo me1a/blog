@@ -19,7 +19,7 @@ let last = []
 
 
 function doc2html() {
-  return src('blog/**/*.md').pipe(md2obj({
+  return src(['blog/**/*.md', 'test/**/*.md']).pipe(md2obj({
     visit(d) {
       if (!search.some(item => item.title === d._name && item.url === d._url)) {
         d._search.forEach(i => {
