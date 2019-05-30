@@ -1,7 +1,58 @@
 body {
   margin: 0;
+  min-width: 375px;
 }
 
+.header {
+  height: 60px;
+  width: 100%;
+  background: white;
+
+  border-bottom: 1px solid #eee;
+  transition: left 0.3s;
+
+  i,
+  a {
+    line-height: 60px;
+  }
+
+  .right {
+    right: 16px;
+    position: absolute;
+  }
+
+  .iconfont {
+    display: none;
+  }
+
+  .link {
+    display: inline-block;
+    color: #666;
+    text-decoration: none;
+    font-weight: 300;
+    margin-left: 16px;
+    font-size: 14px
+  }
+
+  .left {
+    left: 16px;
+    position: absolute;
+
+
+
+    a {
+      font-weight: bold;
+      text-decoration: none;
+      // line-height: 50px;
+      font-family: fantasy;
+      color: #333;
+      font-size: 24px;
+      margin-left: 16px;
+    }
+
+  }
+
+}
 
 .banner {
   height: 400px;
@@ -21,11 +72,10 @@ body {
   .title {
     font-size: 40px;
     color: white;
-    // background: rgba(0, 0, 0, 0.3);
   }
 
   .input {
-    width: 80vw;
+    width: 80%;
     max-width: 600px;
     position: absolute;
     min-height: 50px;
@@ -74,12 +124,11 @@ body {
   }
 }
 
-
 .contents {
 
   .item {
     font-size: 14px;
-    color: #333;
+    color: #5e6d82;
     font-weight: 300;
     user-select: none;
 
@@ -95,14 +144,14 @@ body {
 
       .iconfont {
         margin-right: 6px;
-        color: rgb(163, 218, 255)
+        color: #5e6d82
       }
 
 
 
       a {
         text-decoration: none;
-        color: #333;
+        color: #5e6d82;
       }
     }
 
@@ -119,32 +168,51 @@ body {
         .item {
           padding: 0 8px;
           border-left: 1px solid #ddd;
-          margin-left: 4px;
+          margin-left: 8px;
         }
       }
     }
   }
 }
 
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  max-width: 900px;
+  margin: 0 auto 0;
+  align-items: flex-start;
+}
+
+.copyall {
+  flex: 200px 0 0;
+  height: 1px;
+  display: none;
+}
+
+.fix~.copyall {
+  display: block
+}
+
 .all {
-  padding-left: 50px;
-  width: 250px;
-  box-sizing: border-box;
+  flex: 200px 0 0;
 
   &.fix {
     position: fixed;
     top: 16px;
   }
+
+
 }
 
 .lasts {
-  width: 650px;
+  padding: 16px;
 
   .item {
     padding: 3px 6px;
     display: block;
     font-size: 14px;
-    color: #333;
+    color: #5e6d82;
     font-weight: 300;
     user-select: none;
     text-decoration: none;
@@ -153,7 +221,7 @@ body {
 
   .time {
     font-size: 12px;
-
+    color: #999
   }
 }
 
@@ -161,20 +229,146 @@ body {
   border-left: 1px solid transparent;
 }
 
-.main {
-  display: flex;
-  justify-content: space-between;
-  max-width: 900px;
-  margin: 24px auto;
-  align-items: flex-start;
+
+
+.h5 {
+  display: none
 }
 
-@media (max-width: 414px) {
+
+@media (max-width: 765px) {
+  body {
+    background: #f3f3f3;
+
+  }
+
+
+
   .all {
     display: none;
+  }
+
+  .h5 {
+    display: block;
+    top: -100%;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    box-sizing: border-box;
+    z-index: 90;
+    transition: top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  }
+
+  .lasts {
+    padding: 16px 0
+  }
+
+  .menu {
+    .h5 {
+      left: 0;
+      top: 0;
+      background: white;
+      padding: 24px;
+      box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 5px 0px rgba(0, 0, 0, 0.12) !important;
+
+      .menu-close {
+        position: fixed;
+        bottom: 20px;
+        width: 100%;
+        left: 0;
+        text-align: center;
+      }
+    }
   }
 
   .main {
     padding: 0 8px;
   }
+
+  .banner {
+    height: 200px;
+  }
+
+  .lasts {
+    .item {
+      background: white;
+      padding: 16px;
+      border-radius: 4px;
+
+      a {
+        color: #333;
+        font-size: 18px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      p {
+        letter-spacing: 0.5px;
+      }
+
+    }
+  }
+
+  .fix~.copyall {
+    display: none !important
+  }
+
+  .banner {
+    margin-top: 50px;
+
+    .input {
+      display: none;
+    }
+  }
+
+
+
+  .header {
+    height: 50px;
+    width: 100%;
+    background: white;
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid #eee;
+    transition: left 0.3s;
+
+    i,
+    a {
+      line-height: 50px;
+    }
+
+    .right {
+      right: 16px;
+      position: absolute;
+    }
+
+    .iconfont {
+      display: inline-block;
+    }
+
+    .left {
+      left: 16px;
+      position: absolute;
+
+
+
+      a {
+        font-weight: bold;
+        text-decoration: none;
+        // line-height: 50px;
+        font-family: fantasy;
+        color: #333;
+        font-size: 16px;
+        margin-left: 16px;
+      }
+
+    }
+
+  }
+
+
 }
