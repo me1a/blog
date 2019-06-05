@@ -11,10 +11,40 @@ html
                  != 'window._PAGEDATA = ' + JSON.stringify(_data)
       body
         .fm
-          h1.title #{title ? title : _h1}
+          h1.title#page_top #{title ? title : _h1}
           if(author && date)
             .info
               span 作者：#{author}
               span 日期：#{date}
-        .content
-          != _doc
+        .main
+          .content
+            != _doc
+          .toc
+        a.top(href='#page_top') TOP
+
+      script.
+        const toc = document.querySelector("#目录").nextElementSibling
+        if(toc.tagName === 'UL') {
+          const t = toc.cloneNode(true)
+          t.id = 'toc'
+          document.querySelector('.toc').append(t)
+        }
+        const h2s  = document.querySelectorAll('h2')
+        const tops = Array.from(h2s).map(item => item.offsetTop + 180)
+
+        document.querySelectorAll('#toc li')[0].setAttribute('class', 'active')
+
+        window.addEventListener('scroll', function(e) {
+          const scroll = document.documentElement.scrollTop
+          for(let i = 0 ;i < tops.length ; i++) {
+            if(scroll > tops[i] ) {
+              const li = document.querySelectorAll('#toc li')
+              for(let j = 0; j < li.length; j++) {
+                li[j].setAttribute('class', '')
+              }
+              li[i].setAttribute('class', 'active')
+            }
+            document.querySelector('#toc').setAttribute('class', scroll >= tops[0] ? 'active':'')
+
+          }
+        })
