@@ -13,7 +13,7 @@ const obj2pug = require('./build/gulp-pug2html')
 const dirTree = require("directory-tree")
 
 const { navbar } = require('./config')
-let tree
+let tree = []
 let search = []
 let last = []
 
@@ -42,9 +42,6 @@ function doc2html() {
           des: d._description
         })
       }
-
-
-
     }
   })).pipe(obj2pug(
     { template: process.cwd() + '/components/blog-template.pug' }
@@ -81,11 +78,17 @@ function clean(cb) {
   cb()
 }
 
+function init(cb) {
+  search = []
+  last = []
+  tree = []
+  cb()
+}
+
 function watchTask() {
   watch('less/**/*.less', parallel(less2css))
   watch(['pages/**/*.pug', 'components/**/*.pug'], parallel(pug2html))
-  watch(['blog/**/*.md', 'components/**/*.pug'], parallel(doc2html))
-  watch('dist/blog/**/**.html', getMDTree)
+  watch(['blog/**/*.md', 'components/**/*.pug'], series(init, doc2html, getMDTree, pug2html))
 }
 function server(cb) {
   browserSync.init({
@@ -101,9 +104,9 @@ function server(cb) {
 
 function getMDTree(cb) {
 
-  const t = dirTree('dist/blog', { extensions: /\.html/, attributes: ['title', 'url'] }, (item, path, stats) => {
+  const t = dirTree('blog', { extensions: /\.md/, attributes: ['title', 'url'] }, (item, path, stats) => {
     item.url = item.path.slice(4)
-    item.title = item.name.slice(0, -5)
+    item.title = item.name.slice(0, -3)
   })
   tree = t.children
   cb()
