@@ -105,7 +105,7 @@ function server(cb) {
 function getMDTree(cb) {
 
   const t = dirTree('blog', { extensions: /\.md/, attributes: ['title', 'url'] }, (item, path, stats) => {
-    item.url = item.path.slice(4)
+    item.url = item.path.replace('.md', '.html')
     item.title = item.name.slice(0, -3)
   })
   tree = t.children
