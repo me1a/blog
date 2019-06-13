@@ -19,7 +19,7 @@ let last = []
 
 
 function doc2html() {
-  return src(['blog/**/*.md', 'tests/**/*.md']).pipe(md2obj({
+  return src(['docs/**/*.md', 'tests/**/*.md']).pipe(md2obj({
     visit(d) {
       if (!search.some(item => item.title === d._name && item.url === d._url)) {
         d._search.forEach(i => {
@@ -44,8 +44,8 @@ function doc2html() {
       }
     }
   })).pipe(obj2pug(
-    { template: process.cwd() + '/components/blog-template.pug' }
-  )).pipe(dest('dist/blog/'))
+    { template: process.cwd() + '/components/docs-template.pug' }
+  )).pipe(dest('dist/docs/'))
 }
 function less2css() {
   return src('less/*.less')
@@ -88,7 +88,7 @@ function init(cb) {
 function watchTask() {
   watch('less/**/*.less', parallel(less2css))
   watch(['pages/**/*.pug', 'components/**/*.pug'], parallel(pug2html))
-  watch(['blog/**/*.md', 'components/**/*.pug'], series(init, doc2html, getMDTree, pug2html))
+  watch(['docs/**/*.md', 'components/**/*.pug'], series(init, doc2html, getMDTree, pug2html))
 }
 function server(cb) {
   browserSync.init({
@@ -104,7 +104,7 @@ function server(cb) {
 
 function getMDTree(cb) {
 
-  const t = dirTree('blog', { extensions: /\.md/, attributes: ['title', 'url'] }, (item, path, stats) => {
+  const t = dirTree('docs', { extensions: /\.md/, attributes: ['title', 'url'] }, (item, path, stats) => {
     item.url = item.path.replace('.md', '.html')
     item.title = item.name.slice(0, -3)
   })
