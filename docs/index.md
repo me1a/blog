@@ -51,7 +51,7 @@ date: 2019-5-26
 在 `wikipedia` 中， `markdown` 描述为:
 > Markdown是一种轻量级标记语言, 它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML（或者HTML）文档”
 
-`markdown` 的特点是 **轻量化**、**易读易写**。我们现在要将 `markdown` 转化为 `html`。选型上选择了 [unified](!https://unified.js.org/):
+`markdown` 的特点是 **轻量化**、**易读易写**。我们现在要将 `markdown` 转化为 `html`。选型上选择了 [unified](https://unified.js.org/):
 
 > unified is an interface for processing text with syntax trees and transforming between them.
 >
