@@ -37,9 +37,10 @@ function doc2html() {
       if (!last.some(item => item.name === d._name && item.url === d._url)) {
         last.push({
           url: d._url,
-          name: d._name,
+          name: d._h1,
           updateTime: d._updateTime,
-          des: d._description
+          des: d._description,
+          hash: `${d._hash}`
         })
       }
     }
