@@ -32,7 +32,7 @@
   "scripts": {
     "build": "gulp build",
     "dev": "gulp",
-    "publish": "node build/publish.js"
+    "publish": "node build/_publish.js"
   },
   "keywords": [],
   "author": "",
