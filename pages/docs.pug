@@ -70,10 +70,10 @@ html
       if(e.target.parentElement.getAttribute('class').includes('name')) {
         const tc = e.target.parentElement.parentElement.querySelector('.children')
         const b = tc.getAttribute('class').includes('open')
-        const c = document.querySelectorAll('.children')
-        for(let i = 0; i< c.length; i++){
-          c[i].setAttribute('class', 'children')
-        }
+        //- const c = document.querySelectorAll('.children')
+        //- for(let i = 0; i< c.length; i++){
+        //-   c[i].setAttribute('class', 'children')
+        //- }
         tc.setAttribute('class', b ? 'children': 'children open')
       }
     })
@@ -99,14 +99,14 @@ html
 
     const sidebar = document.querySelector('.all')
     document.addEventListener('scroll', (e) => {
-      if(document.body.getAttribute('class')) return
-      const s = document.documentElement.scrollTop
-      if(s > 416) {
-        sidebar.style.left = sidebar.offsetLeft + 'px'
-        sidebar.setAttribute('class', 'all fix')
-      } else {
-        sidebar.setAttribute('class', 'all')
-      }
+      //- if(document.body.getAttribute('class')) return
+      //- const s = document.documentElement.scrollTop
+      //- if(s > 416) {
+      //-   sidebar.style.left = sidebar.offsetLeft + 'px'
+      //-   sidebar.setAttribute('class', 'all fix')
+      //- } else {
+      //-   sidebar.setAttribute('class', 'all')
+      //- }
     })
 
     document.querySelector('.icon-menu').addEventListener('click', (e) => {
