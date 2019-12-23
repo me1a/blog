@@ -16,11 +16,13 @@ const { navbar } = require('./config')
 let tree = []
 let search = []
 let last = []
+let obj = {} // 为文件名和标题名做一个映射
 
 
 function doc2html() {
   return src(['docs/**/*.md', 'tests/**/*.md']).pipe(md2obj({
     visit(d) {
+      obj[d._url] = d._h1
       if (!search.some(item => item.title === d._name && item.url === d._url)) {
         d._search.forEach(i => {
           search.push({
@@ -107,7 +109,7 @@ function getMDTree(cb) {
 
   const t = dirTree('docs', { extensions: /\.md/, attributes: ['title', 'url'] }, (item, path, stats) => {
     item.url = item.path.replace('.md', '.html')
-    item.title = item.name.slice(0, -3)
+    item.title = obj[`/${item.path.replace('.md', '.html')}`]
   })
   tree = t.children
   cb()
