@@ -8,7 +8,7 @@ mixin contents(content, isroot)
             span #{item.name}
           else
             a(href=item.url) #{item.title}
-        div(class=isroot ? 'children': 'child')
+        div(class=isroot ? 'children open': 'child')
           if item.children
             +contents(item.children)
 
@@ -66,16 +66,8 @@ html
       console.log(e)
     }
 
-    document.querySelector('.open.contents').addEventListener('click', (e) => {
-      if(e.target.parentElement.getAttribute('class').includes('name')) {
-        const tc = e.target.parentElement.parentElement.querySelector('.children')
-        const b = tc.getAttribute('class').includes('open')
-        //- const c = document.querySelectorAll('.children')
-        //- for(let i = 0; i< c.length; i++){
-        //-   c[i].setAttribute('class', 'children')
-        //- }
-        tc.setAttribute('class', b ? 'children': 'children open')
-      }
+    document.querySelector('contents').addEventListener('click', (e) => {
+      console.log(e.target)
     })
     const result = document.querySelector('.result')
     const search = document.querySelector('.search')

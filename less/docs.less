@@ -126,6 +126,8 @@ body {
 
 .contents {
 
+  width: 300px;
+
   .item {
     font-size: 14px;
     color: #5e6d82;
@@ -137,10 +139,7 @@ body {
     .link {
       cursor: pointer;
       padding: 3px 0;
-      width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+
       display: flex;
       align-items: center;
 
@@ -156,6 +155,9 @@ body {
         color: #5e6d82;
         display: block;
         width: 96%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
@@ -183,7 +185,7 @@ body {
 .main {
   display: flex;
   justify-content: space-between;
-  max-width: 900px;
+  max-width: 1100px;
   margin: 0 auto 0;
   align-items: flex-start;
 }
@@ -199,7 +201,6 @@ body {
 }
 
 .all {
-  flex: 200px 0 0;
 
   &.fix {
     position: fixed;
@@ -213,7 +214,7 @@ body {
   padding: 16px;
 
   .item {
-    padding: 3px 6px;
+    padding: 16px;
     display: block;
     font-size: 14px;
     color: #5e6d82;
@@ -221,11 +222,20 @@ body {
     user-select: none;
     text-decoration: none;
     margin-bottom: 16px;
+    border: 1px solid #efefef;
+    border-radius: 8px;
   }
 
   .time {
-    font-size: 12px;
-    color: #999
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  a {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #5e6d82
   }
 }
 

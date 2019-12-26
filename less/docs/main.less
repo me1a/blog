@@ -53,13 +53,25 @@ html {
   right: 100px;
   bottom: 100px;
   font-size: 12px;
-  background: tomato;
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  text-align: center;
-  color: white;
-  border-radius: 50%;
+
+  a {
+    display: block;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: white;
+    border-radius: 50%;
+
+    &:first-child {
+      background: rgb(79, 131, 2);
+    }
+
+    &:last-child {
+      background: rgb(2, 84, 131);
+      margin-top: 14px;
+    }
+  }
 }
 
 #toc {

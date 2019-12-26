@@ -21,7 +21,9 @@ html
           .content
             != _doc
           .toc
-        a.top(href='#page_top') TOP
+        .top
+          a(href='#page_top') TOP
+          a(href='/docs.html') DOC
 
       script.
         const toc = document.querySelector("#目录").nextElementSibling
