@@ -1,97 +1,82 @@
-const fs = require('fs')
+
 
 const { parallel, series, src, dest, watch } = require('gulp')
 const less = require('gulp-less')
 const mincss = require('gulp-clean-css')
 const browserSync = require('browser-sync').create()
-const rm = require('rimraf')
+const dirTree = require('directory-tree')
 const pug = require('gulp-pug')
 
 const md2obj = require('./build/gulp-md2obj')
 const obj2pug = require('./build/gulp-pug2html')
 
-const dirTree = require("directory-tree")
+const globs = {
+  less: 'less/**/*.less',
+  img: 'img/**/*.*',
+  pug: ['pages/**/*.pug', 'components/**/*.pug'],
+  markdown: 'docs/**/*.md'
+}
 
-const { navbar } = require('./config')
 let tree = []
 let search = []
 let last = []
-let obj = {} // 为文件名和标题名做一个映射
+let object = {}
 
 
-function doc2html() {
-  return src(['docs/**/*.md', 'tests/**/*.md']).pipe(md2obj({
-    visit(d) {
-      obj[d._url] = d._h1
-      if (!search.some(item => item.title === d._name && item.url === d._url)) {
-        d._search.forEach(i => {
-          search.push({
-            url: d._url,
-            title: i,
-            name: d._name
-          })
-        })
-        search.push({
-          title: d._name,
-          url: d._url
-        })
-      }
-      if (!last.some(item => item.name === d._name && item.url === d._url)) {
-        last.push({
-          url: d._url,
-          name: d._h1,
-          updateTime: d._updateTime,
-          des: d._description,
-          hash: `${d._hash}`
-        })
-      }
+function getTree() {
+
+  tree = dirTree('docs', { extensions: /\.md$/ }, (item, v, stats) => {
+    if (item.type === 'file') {
+      item.path = item.path.slice(0, -3) + '.html'
+      item.name = object[item.path]
+      console.log(object)
+    }
+  }).children
+}
+
+function markdownTask(path) {
+  return src(path).pipe(md2obj({
+    visit(obj) {
+      object[obj.url] = obj.title
+      console.log(object)
     }
   })).pipe(obj2pug(
     { template: process.cwd() + '/components/docs-template.pug' }
   )).pipe(dest('dist/docs/'))
 }
-function less2css() {
-  return src('less/*.less')
-    .pipe(less({}))
+
+
+function imgTask(path) {
+  return src(path).pipe(dest('dist/static/img'))
+}
+
+function lessTask(path) {
+  return src(path).pipe(less({}))
     .pipe(mincss())
     .pipe(dest('dist/static/css/'))
 }
-function pug2html() {
-  return src('pages/**/*.pug')
-    .pipe(pug({
-      locals: {
-        tree,
-        search,
-        last: last,
-        navbar
-      }
-    })).pipe(dest('dist'))
-}
-function copyimg() {
-  return src('img/**/*.*').pipe(dest('dist/static/img'))
+
+
+function pugTask(path) {
+  return src(path).pipe(pug({
+    locals: {
+      tree: tree,
+      search: [],
+      last: [],
+      navbar: []
+    }
+  })).pipe(dest('dist'))
 }
 
 
+function watchTask(cb) {
 
-
-
-
-function clean(cb) {
-  rm.sync('dist')
+  const watchMarkdown = watch(globs.markdown)
+  watchMarkdown.on('change', markdownTask)
+  watch(globs.pug, (path) => { console.log(path); pugTask(globs.pug) })
+  watch(globs.img, () => { imgTask(globs.img) })
+  watch(globs.less, () => { lessTask(globs.less) })
   cb()
-}
-
-function init(cb) {
-  search = []
-  last = []
-  tree = []
-  cb()
-}
-
-function watchTask() {
-  watch('less/**/*.less', parallel(less2css))
-  watch(['pages/**/*.pug', 'components/**/*.pug'], parallel(pug2html))
-  watch(['docs/**/*.md', 'components/**/*.pug'], series(init, doc2html, getMDTree, pug2html))
 }
 function server(cb) {
   browserSync.init({
@@ -105,18 +90,16 @@ function server(cb) {
   cb()
 }
 
-function getMDTree(cb) {
-
-  const t = dirTree('docs', { extensions: /\.md/, attributes: ['title', 'url'] }, (item, path, stats) => {
-    item.url = item.path.replace('.md', '.html')
-    item.title = obj[`/${item.path.replace('.md', '.html')}`]
-  })
-  tree = t.children
+function build(cb) {
+  lessTask(globs.less)
+  imgTask(globs.img)
+  markdownTask(globs.markdown)
+  getTree()
+  pugTask(globs.pug)
   cb()
 }
 
 
 
-
-exports.default = series(clean, parallel(doc2html, less2css, copyimg), getMDTree, pug2html, server, watchTask)
-exports.build = series(clean, parallel(doc2html, less2css, copyimg), getMDTree, pug2html)
+exports.default = series(server, watchTask, build)
+exports.build = series(build)
