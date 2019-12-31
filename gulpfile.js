@@ -1,6 +1,6 @@
 
 
-const { parallel, series, src, dest, watch } = require('gulp')
+const { parallel, series, src, dest, watch, task } = require('gulp')
 const less = require('gulp-less')
 const mincss = require('gulp-clean-css')
 const browserSync = require('browser-sync').create()
@@ -9,6 +9,7 @@ const pug = require('gulp-pug')
 
 const md2obj = require('./build/gulp-md2obj')
 const obj2pug = require('./build/gulp-pug2html')
+const { navbar, lastArticleCount } = require('./config.js')
 
 const globs = {
   less: 'less/**/*.less',
@@ -23,59 +24,78 @@ let last = []
 let object = {}
 
 
-function getTree() {
-
+function getTree(cb) {
   tree = dirTree('docs', { extensions: /\.md$/ }, (item, v, stats) => {
     if (item.type === 'file') {
       item.path = item.path.slice(0, -3) + '.html'
-      item.name = object[item.path]
-      console.log(object)
+      item.name = object[`/${item.path}`]
     }
   }).children
+  cb()
 }
 
 function markdownTask(path) {
-  return src(path).pipe(md2obj({
-    visit(obj) {
-      object[obj.url] = obj.title
-      console.log(object)
-    }
-  })).pipe(obj2pug(
-    { template: process.cwd() + '/components/docs-template.pug' }
-  )).pipe(dest('dist/docs/'))
+  return function () {
+    return src(path).pipe(md2obj({
+      visit(obj) {
+        const { title, createTime, url, description } = obj
+        object[url] = title
+        const date = new Date(createTime)
+        const data = {
+          url: url,
+          name: title,
+          t: date.getTime(),
+          createTime: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),
+          des: description,
+        }
+        if (!last.some(item => item.url === url)) {
+          last.push(data)
+          last = last.sort((a, b) => a.t < b.t ? 1 : -1).slice(0, 10000)
+        }
+      }
+    })).pipe(obj2pug(
+      { template: process.cwd() + '/components/docs-template.pug' }
+    )).pipe(dest('dist/docs/'))
+  }
 }
 
 
 function imgTask(path) {
-  return src(path).pipe(dest('dist/static/img'))
+  return function () {
+    return src(path).pipe(dest('dist/static/img'))
+  }
 }
 
 function lessTask(path) {
-  return src(path).pipe(less({}))
-    .pipe(mincss())
-    .pipe(dest('dist/static/css/'))
+  return function () {
+    return src(path).pipe(less({}))
+      .pipe(mincss())
+      .pipe(dest('dist/static/css/'))
+  }
 }
 
 
 function pugTask(path) {
-  return src(path).pipe(pug({
-    locals: {
-      tree: tree,
-      search: [],
-      last: [],
-      navbar: []
-    }
-  })).pipe(dest('dist'))
+  return function () {
+    return src(path).pipe(pug({
+      locals: {
+        tree: tree,
+        search: search,
+        last: last,
+        navbar
+      }
+    })).pipe(dest('dist'))
+  }
 }
 
 
 function watchTask(cb) {
 
   const watchMarkdown = watch(globs.markdown)
-  watchMarkdown.on('change', markdownTask)
-  watch(globs.pug, (path) => { console.log(path); pugTask(globs.pug) })
-  watch(globs.img, () => { imgTask(globs.img) })
-  watch(globs.less, () => { lessTask(globs.less) })
+  watchMarkdown.on('change', path => markdownTask(path)())
+  watch(globs.pug, pugTask(globs.pug))
+  watch(globs.img, imgTask(globs.img))
+  watch(globs.less, lessTask(globs.less))
   cb()
 }
 function server(cb) {
@@ -90,16 +110,16 @@ function server(cb) {
   cb()
 }
 
-function build(cb) {
-  lessTask(globs.less)
-  imgTask(globs.img)
-  markdownTask(globs.markdown)
-  getTree()
-  pugTask(globs.pug)
-  cb()
-}
 
 
-
-exports.default = series(server, watchTask, build)
-exports.build = series(build)
+exports.build = exports.default = parallel(
+  server,
+  watchTask,
+  lessTask(globs.less),
+  imgTask(globs.img),
+  series(
+    markdownTask(globs.markdown),
+    getTree,
+    pugTask(globs.pug)
+  )
+)
