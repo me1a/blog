@@ -15,11 +15,8 @@ module.exports = options => {
 
     try {
       const compiledFunction = pug.compileFile(options.template)
-      const doc = Buffer.from(file.contents)
       const str = compiledFunction({
         ...file.data,
-        _data: file.data,
-        _doc: doc.toString()
       })
 
       file.contents = Buffer.from(str);

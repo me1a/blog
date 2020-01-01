@@ -5,33 +5,26 @@ const path = require('path')
 
 const md2html = require('./md')
 
-module.exports = options => {
+module.exports = (options = {}) => {
   return through.obj(async (file, encoding, callback) => {
     if (file.isNull()) {
       callback(null, file);
       return;
     }
 
-
-
     try {
-      const { _doc, ...data } = md2html(file.path)
-      file.contents = Buffer.from(_doc);
-      file.data = data
-
-
+      const obj = md2html(file.path)
+      file.contents = Buffer.from(obj.doc);
       const f = fs.statSync(file.path)
-
-      const url = file.path.slice(process.cwd().length)
+      const name = file.path.slice(process.cwd().length, -3)
+      const url = name + '.html'
+      file.data = obj
 
       options.visit && options.visit({
-        ...file.data,
-        _updateTime: new Date(f.mtime).toLocaleString(),
-        _createTime: new Date(f.birthtime).toLocaleString(),
-        _path: file.path,
-        _name: path.basename(file.path).replace('.md', ''),
-        _url: url.replace('.md', '.html'),
-        _search: data._search
+        updateTime: f.mtime,
+        createTime: f.birthtime,
+        url,
+        ...obj
       })
       callback(null, file);
     } catch (error) {
