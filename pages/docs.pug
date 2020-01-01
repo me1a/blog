@@ -7,7 +7,7 @@ mixin contents(content, isroot)
           if  item.children
             span #{item.name}
           else
-            a(href=item.url) #{item.title}
+            a(href=item.path) #{item.name}
         div(class=isroot ? 'children open': 'child')
           if item.children
             +contents(item.children)
@@ -18,7 +18,7 @@ mixin lasts(last)
       .item
         a(href=item.url) #{item.name}
         p #{item.des}
-        p.time #{item.updateTime}
+        p.time #{item.createTime}
 
 <!DOCTYPE html>
 html
@@ -49,7 +49,7 @@ html
           .result
       .main
         .lasts
-          +lasts(last.sort((a, b) => a.updateTime < b.updateTime ? 1 : -1).slice(0, 15))
+          +lasts(last)
         .all
           h4 目录
           +contents(tree, true)

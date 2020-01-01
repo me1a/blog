@@ -17,7 +17,7 @@ module.exports = function getFrontMatter() {
           obj[k] = v
         }
       })
-      data.data = { ...obj }
+      data._data = { ...obj }
     })
   }
 }

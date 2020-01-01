@@ -41,13 +41,11 @@ module.exports = function (markdownPath) {
   }
 
   const file = processor.processSync(vfile.readSync(markdownPath))
-  console.error(report(file))
-  console.log(file._h1)
   return {
-    _doc: file.contents,
-    _description: file._description,
-    _search: file._search,
-    _h1: file._h1,
-    ...file.data
+    doc: file.contents,
+    description: file._description,
+    search: file._search,
+    title: file._h1,
+    data: file._data
   }
 }

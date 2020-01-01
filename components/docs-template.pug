@@ -7,19 +7,19 @@ html
             meta(name='description' content= description)
             link(rel="stylesheet", href="/static/css/docs-template.css")
             link(rel="stylesheet", href="//at.alicdn.com/t/font_1197539_zhpodoiyx5c.css")
-            title #{title ? title: 'MeiHuan`s Blog'}
+            title #{'MeiHuan`s Blog'}
             script
-                 != 'window._PAGEDATA = ' + JSON.stringify(_data)
+                 != 'window._PAGEDATA = ' + JSON.stringify(data)
       body
         .fm
-          h1.title#page_top #{title ? title : _h1}
-          if(author && date)
+          h1.title#page_top #{title ? title : title}
+          if(data !== undefined)
             .info
-              span 作者：#{author}
-              span 日期：#{date}
+              span 作者：#{data.author}
+              span 日期：#{data.date}
         .main
           .content
-            != _doc
+            != doc
           .toc
         .top
           a(href='#page_top') TOP
