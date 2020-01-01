@@ -8,7 +8,7 @@ const dirTree = require('directory-tree')
 const pug = require('gulp-pug')
 
 const md2obj = require('./build/gulp-md2obj')
-const obj2pug = require('./build/gulp-pug2html')
+const pug2html = require('./build/gulp-pug2html')
 const { navbar, lastArticleCount } = require('./config.js')
 
 const globs = {
@@ -50,10 +50,11 @@ function markdownTask(path) {
         }
         if (!last.some(item => item.url === url)) {
           last.push(data)
-          last = last.sort((a, b) => a.t < b.t ? 1 : -1).slice(0, 10000)
+          last = last.sort((a, b) => a.t < b.t ? 1 : -1).slice(0, lastArticleCount)
         }
+
       }
-    })).pipe(obj2pug(
+    })).pipe(pug2html(
       { template: process.cwd() + '/components/docs-template.pug' }
     )).pipe(dest('dist/docs/'))
   }
