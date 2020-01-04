@@ -48,6 +48,11 @@ function visit(obj) {
     last.push(data)
     last = last.sort((a, b) => a.t < b.t ? 1 : -1).slice(0, lastArticleCount)
   }
+  if (!search.some(i => obj.search.includes(i.title) && i.url === url)) {
+    obj.search.forEach(item => {
+      search.push({ title: item, url })
+    })
+  }
 }
 
 function markdownTask(path) {
@@ -101,7 +106,7 @@ function server(cb) {
     watch: true,
     port: 3434,
     server: {
-      baseDir: "./dist/",
+      baseDir: './dist/',
     },
     open: false
   }, cb)
