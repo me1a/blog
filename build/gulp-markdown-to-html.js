@@ -1,7 +1,7 @@
 const through = require('through2');
 const PluginError = require('plugin-error');
 const fs = require('fs')
-const path = require('path')
+const pug = require('pug')
 
 const md2html = require('./md')
 
@@ -14,18 +14,22 @@ module.exports = (options = {}) => {
 
     try {
       const obj = md2html(file.path)
-      file.contents = Buffer.from(obj.doc);
       const f = fs.statSync(file.path)
       const name = file.path.slice(process.cwd().length, -3)
       const url = name + '.html'
-      file.data = obj
 
+      const compiledFunction = pug.compileFile(options.template)
+      const str = compiledFunction({
+        ...obj,
+      })
       options.visit && options.visit({
         updateTime: f.mtime,
         createTime: f.birthtime,
         url,
         ...obj
       })
+      file.contents = Buffer.from(str);
+      file.extname = '.html'
       callback(null, file);
     } catch (error) {
       callback(new PluginError('gulp-markdown-obj', error, { fileName: file.path }));
