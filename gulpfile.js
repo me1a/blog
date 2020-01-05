@@ -1,6 +1,6 @@
 
 
-const { parallel, series, src, dest, watch, task } = require('gulp')
+const { parallel, series, src, dest, watch } = require('gulp')
 const less = require('gulp-less')
 const miniCss = require('gulp-clean-css')
 const browserSync = require('browser-sync').create()
@@ -65,40 +65,34 @@ function markdownTask(path) {
 }
 
 
-function imgTask(path) {
-  return function () {
-    return src(path).pipe(dest('dist/static/img'))
-  }
+function imgTask() {
+  return src(globs.img).pipe(dest('dist/static/img'))
 }
 
-function lessTask(path) {
-  return function () {
-    return src(path).pipe(less({}))
-      .pipe(miniCss())
-      .pipe(dest('dist/static/css/'))
-  }
+function lessTask() {
+  return src(globs.less).pipe(less({}))
+    .pipe(miniCss())
+    .pipe(dest('dist/static/css/'))
 }
 
 
-function pugTask(path) {
-  return function () {
-    return src(path).pipe(pug({
-      locals: {
-        tree: tree,
-        search: search,
-        last: last,
-        navbar
-      }
-    })).pipe(dest('dist'))
-  }
+function pugTask() {
+  return src(globs.pug).pipe(pug({
+    locals: {
+      tree: tree,
+      search: search,
+      last: last,
+      navbar
+    }
+  })).pipe(dest('dist'))
 }
 
 
 function watchTask(cb) {
   watch(globs.markdown, markdownTask(globs.markdown))
-  watch(globs.pug, pugTask(globs.pug))
-  watch(globs.img, imgTask(globs.img))
-  watch(globs.less, lessTask(globs.less))
+  watch(globs.pug, pugTask)
+  watch(globs.img, imgTask)
+  watch(globs.less)
   cb()
 }
 function server(cb) {
@@ -115,12 +109,12 @@ function server(cb) {
 
 
 exports.build = exports.default = parallel(
-  lessTask(globs.less),
-  imgTask(globs.img),
+  lessTask,
+  imgTask,
   series(
     markdownTask(globs.markdown),
     getTree,
-    pugTask(globs.pug)
+    pugTask
   ),
   server,
   watchTask,
