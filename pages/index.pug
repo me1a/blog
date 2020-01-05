@@ -11,7 +11,5 @@ html
       .des
         .name MeiHuan`s Blog
         .menu
-          a(href="/docs.html") 博客
-          a(href="/") 资讯
-          a(href="/") 资源
-          a(href="/") 实验室
+          each item in navbar
+            a(href=item.url target= item.blank ? '_blank': '' class='link') #{item.name}
