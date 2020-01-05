@@ -7,7 +7,7 @@ mixin contents(content, isroot)
           if  item.children
             span #{item.name}
           else
-            a(href=item.path) #{item.name}
+            a(href=item.path target='_blank') #{item.name}
         div(class=isroot ? 'children open': 'child')
           if item.children
             +contents(item.children)
@@ -16,7 +16,7 @@ mixin lasts(last)
   div.last
     each item in last
       .item
-        a(href=item.url) #{item.name}
+        a(href=item.url target='_blank') #{item.name}
         p #{item.des}
         p.time #{item.createTime}
 
