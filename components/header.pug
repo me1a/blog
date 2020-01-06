@@ -1,0 +1,8 @@
+.header
+    .left
+        i.iconfont.icon-menu
+        a(href="/") It`s me
+    .right
+        i.iconfont.icon-search
+        each item in navbar
+            a(href=item.url target= item.blank ? '_blank': '' class='link') #{item.name}
