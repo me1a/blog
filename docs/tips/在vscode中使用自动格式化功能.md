@@ -1,6 +1,6 @@
 ---
-author: meihuan
-date: 2020-01-04
+作者: meihuan
+日期: 2020-01-04
 ---
 
 # 在vscode保存文件时自动格式化

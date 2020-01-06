@@ -1,53 +1,50 @@
-doctype html
-html
-      head
-            meta(charset='UTF-8')
-            meta(name='viewport' content='width=device-width, initial-scale=1.0')
-            meta(name='keywords' content= keywords)
-            meta(name='description' content= description)
-            link(rel="stylesheet", href="/static/css/docs-template.css")
-            link(rel="stylesheet", href="//at.alicdn.com/t/font_1197539_zhpodoiyx5c.css")
-            title #{'MeiHuan`s Blog'}
-            script
-                 != 'window._PAGEDATA = ' + JSON.stringify(data)
-      body
-        .fm
-          h1.title#page_top #{title ? title : title}
-          if(data !== undefined)
-            .info
-              span 作者：#{data.author}
-              span 日期：#{data.date}
-        .main
-          .content
-            != doc
-          .toc
-        .top
-          a(href='#page_top') TOP
-          a(href='/docs.html') DOC
+extends ./layout.pug
 
-      script.
-        const toc = document.querySelector("#目录").nextElementSibling
-        if(toc.tagName === 'UL') {
-          const t = toc.cloneNode(true)
-          t.id = 'toc'
-          document.querySelector('.toc').append(t)
-        }
-        const h2s  = document.querySelectorAll('h2')
-        const tops = Array.from(h2s).map(item => item.offsetTop + 180)
+block meta
+  meta(name='keywords' content= keywords)
+  meta(name='description' content= description)
+block css
+  link(rel="stylesheet", href="/static/css/docs-template.css")
+  link(rel="stylesheet", href="//at.alicdn.com/t/font_1197539_zhpodoiyx5c.css")
+block body
 
-        document.querySelectorAll('#toc li')[0].setAttribute('class', 'active')
+  .main
+    .content
+      != doc
+    .toc
+    .fm
+      for item, key in data
+        p
+          span #{key}
+          span #{item}
+  .top
+    a(href='#page_top') TOP
 
-        window.addEventListener('scroll', function(e) {
-          const scroll = document.documentElement.scrollTop
-          for(let i = 0 ;i < tops.length ; i++) {
-            if(scroll > tops[i] ) {
-              const li = document.querySelectorAll('#toc li')
-              for(let j = 0; j < li.length; j++) {
-                li[j].setAttribute('class', '')
-              }
-              li[i].setAttribute('class', 'active')
-            }
-            document.querySelector('#toc').setAttribute('class', scroll >= tops[0] ? 'active':'')
+block jsend
+  script.
+    const toc = document.querySelector("#目录").nextElementSibling
+    if(toc.tagName === 'UL') {
+      const t = toc.cloneNode(true)
+      t.id = 'toc'
+      document.querySelector('.toc').append(t)
+    }
+    const h2s  = document.querySelectorAll('h2')
+    const tops = Array.from(h2s).map(item => item.offsetTop)
+    
 
+    const li = document.querySelectorAll('#toc li')
+    li[0].setAttribute('class', 'active')
+
+
+    window.addEventListener('scroll', function(e) {
+      const scroll = document.documentElement.scrollTop
+      for(let i = 0 ;i < tops.length ; i++) {
+        if(scroll+2 > tops[i] ) {
+          for(let j = 0; j < li.length; j++) {
+            li[j].setAttribute('class', '')
           }
-        })
+          li[i].setAttribute('class', 'active')
+        }
+      }
+      document.querySelector('#toc').setAttribute('class', scroll >= tops[0] ? 'active':'')
+    })
