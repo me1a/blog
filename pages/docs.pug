@@ -1,110 +1,16 @@
-mixin contents(content, isroot)
-  div(class=isroot? 'open contents':'contents')
-    each item in content
-      div(class=isroot ? 'root item': 'item')
-        div(class=item.children? 'name': 'link')
-          i(class=item.children?'iconfont icon-folder-close':'iconfont icon-file')
-          if  item.children
-            span #{item.name}
-          else
-            a(href=item.path target='_blank') #{item.name}
-        div(class=isroot ? 'children open': 'child')
-          if item.children
-            +contents(item.children)
+extends ../components/layout.pug
+include ../components/table-of-content.pug 
+include ../components/last-article.pug 
 
-mixin lasts(last)
-  div.last
-    each item in last
-      .item
-        a(href=item.url target='_blank') #{item.name}
-        p #{item.des}
-        p.time #{item.createTime}
-
-<!DOCTYPE html>
-html
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0, user-scalable=no")
-    meta(http-equiv="X-UA-Compatible", content="ie=edge")
-    title It`s me
-    link(rel="stylesheet", href="//at.alicdn.com/t/font_1197539_vgn2vpugpwq.css")
-    link(rel="stylesheet", href="/static/css/docs.css")
-    script
-      != 'window._SEARCH_DATA = ' + JSON.stringify(search)
-    script
-      != 'window._LAST_DATA = ' + JSON.stringify(last)
-  body
-      .header
-        .left
-          i.iconfont.icon-menu
-          a(href="/") It`s me
-        .right
-          i.iconfont.icon-search
-          each item in navbar
-            a(href=item.url target= item.blank ? '_blank': '' class='link') #{item.name}
-      .banner
-        //- .title It`s me
-        .input
-          input.search
-          .result
-      .main
-        .lasts
-          +lasts(last)
-        .all
-          h4 目录
-          +contents(tree, true)
-        .copyall
-      .h5
-        h4 目录
-        +contents(tree, true)
-        .menu-close
-          .iconfont.icon-top
-
-  script.
-
-    function changeHandle(e) {
-      console.log(e)
-    }
-
-    //- document.querySelector('contents').addEventListener('click', (e) => {
-    //-   console.log(e.target)
-    //- })
-    const result = document.querySelector('.result')
-    const search = document.querySelector('.search')
-    search.addEventListener('input', (e) => {
-      const value  = e.target.value
-      result.innerHTML = initResult(value)
-
-    })
-    function initResult(v) {
-      let html = ''
-      _SEARCH_DATA.forEach(item => {
-        if(item.title.includes(v)) {
-          html += `<a href='${item.url}'>${item.title.replace(new RegExp(v, 'g'), `<b>${v}</b>`)}</a>`
-        }
-      })
-      html = html == '' ? '<div>未找到结果</div>': html
-      return v ? html : ''
-    }
-    result.innerHTML = initResult(search.value)
-    search.focus()
-
-    const sidebar = document.querySelector('.all')
-    document.addEventListener('scroll', (e) => {
-      //- if(document.body.getAttribute('class')) return
-      //- const s = document.documentElement.scrollTop
-      //- if(s > 416) {
-      //-   sidebar.style.left = sidebar.offsetLeft + 'px'
-      //-   sidebar.setAttribute('class', 'all fix')
-      //- } else {
-      //-   sidebar.setAttribute('class', 'all')
-      //- }
-    })
-
-    document.querySelector('.icon-menu').addEventListener('click', (e) => {
-      document.body.setAttribute('class', 'menu')
-    })
-
-    document.querySelector('.menu-close').addEventListener('click', e => {
-      document.body.setAttribute('class', '')
-    })
+block css
+  link(rel="stylesheet", href="//at.alicdn.com/t/font_1197539_vgn2vpugpwq.css")
+  link(rel="stylesheet", href="/static/css/docs.css")
+block body
+    include ../components/header.pug
+    .banner
+    .main
+      .lasts
+        +lasts(last)
+      .search-and-menu
+        include ../components/search.pug
+        +tableOfContent(tree, true)
