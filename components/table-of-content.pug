@@ -12,3 +12,19 @@ mixin tableOfContent(content, isroot)
           if item.children
             +tableOfContent(item.children)
 
+block js
+  script.
+    window.addEventListener('load', () => {
+      const name = document.querySelectorAll('.name')
+      name.forEach(item => {
+        item.addEventListener('click', e => {
+          let next = e.target.nextElementSibling
+          if (next.classList.value.includes('open')) {
+            next.classList.remove('open')
+          } else {
+            next.classList.add('open')
+          }
+        })
+      })
+    })
+
