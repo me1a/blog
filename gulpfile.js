@@ -13,7 +13,9 @@ const { navbar, lastArticleCount } = require('./config.js')
 const globs = {
   less: 'less/**/*.less',
   img: 'img/**/*.*',
-  pug: ['pages/**/*.pug', 'components/**/*.pug'],
+  pug: 'pages/**/*.pug',
+  component: 'components/**/*.pug',
+  template: 'components/docs-template.pug',
   markdown: 'docs/**/*.md'
 }
 
@@ -59,7 +61,7 @@ function markdownTask(path) {
   return function () {
     return src(path).pipe(md2obj({
       visit,
-      template: process.cwd() + '/components/docs-template.pug'
+      template: globs.template
     })).pipe(dest('dist/docs/'))
   }
 }
@@ -89,10 +91,10 @@ function pugTask() {
 
 
 function watchTask(cb) {
-  watch(globs.markdown, markdownTask(globs.markdown))
-  watch(globs.pug, pugTask)
+  watch([globs.markdown, globs.template], markdownTask(globs.markdown))
+  watch([globs.pug, globs.component], pugTask)
   watch(globs.img, imgTask)
-  watch(globs.less)
+  watch(globs.less, lessTask)
   cb()
 }
 function server(cb) {
