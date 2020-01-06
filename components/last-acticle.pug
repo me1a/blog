@@ -1,0 +1,7 @@
+mixin lasts(last)
+  div.last
+    each item in last
+      .item
+        a(href=item.url target='_blank') #{item.name}
+        p #{item.des}
+        p.time #{item.createTime}
