@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-html
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    meta(http-equiv="X-UA-Compatible", content="ie=edge")
-    title It`s me
-    link(rel="stylesheet", href="/static/css/home.css")
-  body
-    .home
+extends ../components/layout.pug
+
+block css
+  link(rel="stylesheet", href="/static/css/home.css")
+block body
+  .home
       .des
         .name MeiHuan`s Blog
         .menu
