@@ -1,0 +1,14 @@
+mixin tableOfContent(content, isroot)
+  div(class=isroot? 'open contents':'contents')
+    each item in content
+      div(class=isroot ? 'root item': 'item')
+        div(class=item.children? 'name': 'link')
+          i(class=item.children?'iconfont icon-folder-close':'iconfont icon-file')
+          if  item.children
+            span #{item.name}
+          else
+            a(href=item.path target='_blank') #{item.name}
+        div(class=isroot ? 'children open': 'children')
+          if item.children
+            +tableOfContent(item.children)
+
