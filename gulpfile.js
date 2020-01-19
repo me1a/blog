@@ -50,9 +50,9 @@ function visit(obj) {
     last.push(data)
     last = last.sort((a, b) => a.t < b.t ? 1 : -1).slice(0, lastArticleCount)
   }
-  if (!search.some(i => obj.search.includes(i.title) && i.url === url)) {
+  if (!search.some(i => obj.search.some(j => i.title === j.value) && i.url === url)) {
     obj.search.forEach(item => {
-      search.push({ title: item, url })
+      search.push({ title: item.value, url, type: item.type })
     })
   }
 }

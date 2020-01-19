@@ -158,10 +158,6 @@ body {
       border: 1px solid #39f;
     }
 
-    &:focus~.result {
-      max-height: 200px;
-      top: 40px;
-    }
   }
 
   .result {
@@ -174,7 +170,6 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
     max-height: 0;
-    transition: max-height 0.3s, top 0.2s 0.1s;
 
     a {
       display: block;
@@ -192,7 +187,10 @@ body {
       }
     }
 
-    & {}
+    &.active {
+      max-height: 200px;
+      top: 40px;
+    }
   }
 }
 

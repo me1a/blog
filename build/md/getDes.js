@@ -13,6 +13,7 @@ module.exports = function () {
     })
     let arr = []
     visit(tree, 'heading', function (node) {
+      console.log(node)
       if (node.depth < 4) {
 
         function self(node) {
@@ -25,7 +26,10 @@ module.exports = function () {
           return s
         }
         let sa = self(node)
-        if (sa) arr.push(sa.replace(/\s/g, ''))
+        if (sa) arr.push({
+          type: node.depth,
+          value: sa.replace(/\s/g, '')
+        })
       }
     })
     file._search = arr
