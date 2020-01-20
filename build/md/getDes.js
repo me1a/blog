@@ -13,7 +13,6 @@ module.exports = function () {
     })
     let arr = []
     visit(tree, 'heading', function (node) {
-      console.log(node)
       if (node.depth < 4) {
 
         function self(node) {
