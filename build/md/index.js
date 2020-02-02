@@ -12,7 +12,7 @@ const rfm = require('remark-frontmatter')
 const gfm = require('./parseFrontMatter')
 const autoToc = require('./addToc')
 const getDes = require('./getDes')
-const macWindow = require('./addMacWindow')
+const mdStyle = require('./mdStyle')
 const getTitle = require('./getTitle')
 
 module.exports = function (markdownPath) {
@@ -27,7 +27,7 @@ module.exports = function (markdownPath) {
     .use(toc, { tight: true, maxDepth: 2, heading: '目录' })
     .use(remark2rehype)
     .use(test)
-    .use(macWindow)
+    .use(mdStyle)
     .use(getTitle)
     .use(html)
 
