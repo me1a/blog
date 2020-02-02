@@ -110,7 +110,7 @@ function server(cb) {
 
 
 
-exports.build = exports.default = parallel(
+exports.default = parallel(
   lessTask,
   imgTask,
   series(
@@ -120,4 +120,14 @@ exports.build = exports.default = parallel(
   ),
   server,
   watchTask,
+)
+
+exports.build = parallel(
+  lessTask,
+  imgTask,
+  series(
+    markdownTask(globs.markdown),
+    getTree,
+    pugTask
+  )
 )
