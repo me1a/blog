@@ -17,7 +17,6 @@ module.exports = (options = {}) => {
       const f = fs.statSync(file.path)
       const name = file.path.slice(process.cwd().length, -3)
       const url = name + '.html'
-
       const compiledFunction = pug.compileFile(options.template)
       const str = compiledFunction({
         ...obj,
@@ -32,7 +31,7 @@ module.exports = (options = {}) => {
       file.extname = '.html'
       callback(null, file);
     } catch (error) {
-      callback(new PluginError('gulp-markdown-obj', error, { fileName: file.path }));
+      callback(new PluginError('gulp-markdown-to-html', error, { fileName: file.path }));
     }
   });
 };
