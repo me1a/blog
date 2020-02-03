@@ -46,6 +46,6 @@ module.exports = function (markdownPath) {
     description: file._description,
     search: file._search,
     title: file._h1,
-    data: file._data
+    data: file._data ? file._data : {}
   }
 }

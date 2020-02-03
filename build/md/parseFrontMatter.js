@@ -5,19 +5,20 @@ module.exports = function getFrontMatter() {
     visit(tree, 'yaml', function (node) {
       const obj = {}
       const arr = node.value.split('\n')
-      arr.forEach(item => {
-        const i = item.indexOf(':')
-        const k = item.slice(0, i).trim()
-        const v = item.slice(i + 1).trim()
-
-        if ((/\{.*\}/.test(v) || /\[.*\]/.test(v))) {
+      for (let i = 0; i < arr.length; i++) {
+        const item = arr[i]
+        const j = item.indexOf(':')
+        const k = item.slice(0, j).trim()
+        const v = item.slice(j + 1).trim()
+        if (k === '' || v === '') continue
+        if (k && v && (/\{.*\}/.test(v) || /\[.*\]/.test(v))) {
           const val = new Function(`return ${v}`)()
           obj[k] = val
         } else {
           obj[k] = v
         }
-      })
-      data._data = { ...obj }
+      }
+      data._data = obj
     })
   }
 }
